@@ -11,8 +11,10 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
 
     private Vector2 movement;
-
-    private void Update()
+    
+    [SerializeField] private PlayerGun gun;
+    
+    private void HandleMovementInput()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
@@ -20,6 +22,17 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
+    }
+    
+    private void Update()
+    {
+        HandleMovementInput();
+        gun.RotateWeapon();
+        
+        if (Input.GetMouseButtonDown(0))
+        {
+            gun.Shoot();
+        }
     }
 
     private void FixedUpdate()
