@@ -7,7 +7,12 @@ public class Shotgun : PlayerGun
 {
     [SerializeField] private float angle = 3f;
     private int bulletCount = 5;
-    
+
+    Shotgun()
+    {
+        fireRate = 0.5f;
+    }
+
     private Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
     {
         var dir = point - pivot;
@@ -24,7 +29,8 @@ public class Shotgun : PlayerGun
         for (var i = 0; i < bulletCount; ++i)
         {
             var bulletPosition =
-                RotatePointAroundPivot(position, playerPosition, new Vector3(0, 0, (i - (bulletCount - 1) / 2.0f) * angle));
+                RotatePointAroundPivot(position, playerPosition,
+                    new Vector3(0, 0, (i - (bulletCount - 1) / 2.0f) * angle));
 
             var direction = bulletPosition - playerPosition;
             direction.Normalize();
@@ -34,7 +40,7 @@ public class Shotgun : PlayerGun
 
             GameObject bulletInstance = Instantiate(bulletPrefab, bulletPosition, bulletRotation);
 
-            Bullet bullet = bulletInstance.GetComponent<Bullet>();
+            var bullet = bulletInstance.GetComponent<ShotgunBullet>();
 
             SetBulletDirection(bullet, bulletInstance.transform.position);
 
