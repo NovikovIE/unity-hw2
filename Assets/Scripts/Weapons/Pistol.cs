@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class Pistol : PlayerGun
 {
+    Pistol()
+    {
+        fireRate = 1f;
+    }
+    
     public override void CreateBullets(Vector3 position)
     {
         GameObject bulletInstance = Instantiate(bulletPrefab, position, selfTransform.rotation);

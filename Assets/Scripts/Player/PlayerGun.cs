@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class PlayerGun : MonoBehaviour
 {
     protected Transform selfTransform;
-
+    
     private Camera mainCamera;
     [SerializeField] protected float radius = 1f;
 
@@ -13,6 +13,9 @@ public abstract class PlayerGun : MonoBehaviour
     
     public GameObject bulletPrefab;
     [SerializeField] private BulletController bulletController;
+    
+    private bool canFire = true;
+    protected float fireRate = 1f;
     
     private void Start()
     {
@@ -44,11 +47,30 @@ public abstract class PlayerGun : MonoBehaviour
         
         bulletController.AddBullet(bullet);
     }
-    
-    public void Shoot()
+
+    private IEnumerator ShootCoroutine()
     {
         var position = selfTransform.position;
 
         CreateBullets(position);
+        StartCoroutine(FireRateHandler());
+        
+        yield return null;
+    }
+    
+    private IEnumerator FireRateHandler()
+    {
+        float timeToWait = 1 / fireRate;
+        yield return new WaitForSeconds(timeToWait);
+        canFire = true;
+    }
+    
+    public void Shoot()
+    {
+        if (canFire)
+        {
+            canFire = false;
+            StartCoroutine(ShootCoroutine());
+        }
     }
 }

@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movement;
     
     [SerializeField] private PlayerGun gun;
+    private bool isShooting = false;
     
     private void HandleMovementInput()
     {
@@ -30,6 +31,15 @@ public class PlayerMovement : MonoBehaviour
         gun.RotateWeapon();
         
         if (Input.GetMouseButtonDown(0))
+        {
+            isShooting = true;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            isShooting = false;
+        }
+
+        if (isShooting)
         {
             gun.Shoot();
         }

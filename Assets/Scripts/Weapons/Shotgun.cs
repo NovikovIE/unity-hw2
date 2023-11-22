@@ -8,6 +8,11 @@ public class Shotgun : PlayerGun
     [SerializeField] private float angle = 3f;
     private int bulletCount = 5;
     
+    Shotgun()
+    {
+        fireRate = 0.5f;
+    }
+    
     private Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
     {
         var dir = point - pivot;
