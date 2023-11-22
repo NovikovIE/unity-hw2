@@ -40,7 +40,7 @@ public class Shotgun : PlayerGun
 
             GameObject bulletInstance = Instantiate(bulletPrefab, bulletPosition, bulletRotation);
 
-            var bullet = bulletInstance.GetComponent<ShotgunBullet>();
+            var bullet = bulletInstance.GetComponent<Bullet>();
 
             SetBulletDirection(bullet, bulletInstance.transform.position);
 
