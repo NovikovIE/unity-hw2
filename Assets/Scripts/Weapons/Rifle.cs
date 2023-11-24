@@ -15,9 +15,10 @@ public class Rifle : PlayerGun
         GameObject bulletInstance = Instantiate(bulletPrefab, position, selfTransform.rotation);
 
         Bullet bullet = bulletInstance.GetComponent<Bullet>();
-
-        SetBulletDirection(bullet, position);
+        
         bullet.damage = 5;
         bullet.bulletSpeed = 5;
+        
+        SetBulletDirection(bullet, position);
     }
 }

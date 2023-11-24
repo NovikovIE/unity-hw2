@@ -15,9 +15,10 @@ public class SniperRifle : PlayerGun
         GameObject bulletInstance = Instantiate(bulletPrefab, position, selfTransform.rotation);
 
         Bullet bullet = bulletInstance.GetComponent<Bullet>();
-
-        SetBulletDirection(bullet, position);
+        
         bullet.damage = 15;
         bullet.bulletSpeed = 30;
+        
+        SetBulletDirection(bullet, position);
     }
 }

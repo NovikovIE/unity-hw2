@@ -18,7 +18,7 @@ public class BulletController : MonoBehaviour
                 continue;
             }
             
-            bullet.Move();
+            bullet.Action();
         }
     }
 

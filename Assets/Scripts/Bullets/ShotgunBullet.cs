@@ -7,21 +7,15 @@ public class ShotgunBullet : Bullet
 {
     private float expirationDistance = 8f;
     
-    public override void Move()
+    public override void Action()
     {
         var distance = bulletSpeed * Time.deltaTime;
         
-        transform.position += direction * distance;
         expirationDistance -= distance;
         
         if (expirationDistance <= 0)
         {
             Destroy(gameObject);
         }
-    }
-        
-    private void OnCollisionEnter(Collision other)
-    {
-        Destroy(gameObject);
     }
 }

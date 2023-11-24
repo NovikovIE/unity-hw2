@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class UsualBullet : Bullet
 {
-    public override void Move()
+    public override void Action()
     {
-        transform.position += direction * (bulletSpeed * Time.deltaTime);
     }
 }
