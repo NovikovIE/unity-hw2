@@ -16,8 +16,9 @@ public class Pistol : PlayerGun
 
         Bullet bullet = bulletInstance.GetComponent<Bullet>();
         
-        SetBulletDirection(bullet, position);
         bullet.damage = 5;
         bullet.bulletSpeed = 5;
+        
+        SetBulletDirection(bullet, position);
     }
 }

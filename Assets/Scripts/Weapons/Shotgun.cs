@@ -42,10 +42,10 @@ public class Shotgun : PlayerGun
 
             var bullet = bulletInstance.GetComponent<Bullet>();
 
-            SetBulletDirection(bullet, bulletInstance.transform.position);
-
             bullet.damage = 3;
             bullet.bulletSpeed = 20;
+            
+            SetBulletDirection(bullet, bulletInstance.transform.position);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,16 +43,22 @@ public abstract class PlayerGun : MonoBehaviour
     protected void SetBulletDirection(Bullet bullet, Vector3 position)
     {
         bullet.direction = position - player.position;
+        
         bullet.direction.z = 0;
         bullet.direction.Normalize();
+        bullet.direction *= bullet.bulletSpeed;
         
         bulletController.AddBullet(bullet);
+
+        bullet.rb.velocity = bullet.direction;
     }
 
     private IEnumerator ShootCoroutine()
     {
         var position = selfTransform.position;
 
+        position.z = 0;
+        
         CreateBullets(position);
         StartCoroutine(FireRateHandler());
         
