@@ -16,6 +16,10 @@ public class MapGenerator : MonoBehaviour {
 
 	int[,] map;
 
+	public bool CheckPointIsClear(Vector2 point) {
+		return map[(int)point.x, (int)point.y] == 0;
+	}
+
 	void Start() {
 		GenerateMap();
 
