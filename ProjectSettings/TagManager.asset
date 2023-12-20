@@ -7,8 +7,6 @@ TagManager:
   - Background
   - Enemy
   - Bullet
-  - MapGenerator
-  - BulletController
   layers:
   - Default
   - TransparentFX
