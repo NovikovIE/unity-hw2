@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class EnemyMovement : MonoBehaviour
 
     Transform player;
 
-    TextMesh energyText;
+    TMP_Text energyText;
 
     float last_point_pick = 0.0f;
 
@@ -43,7 +44,7 @@ public class EnemyMovement : MonoBehaviour
         randomPoint = spawnPoint;
         mapGenerator = GameObject.FindWithTag("MapGenerator").GetComponent<MapGenerator>();
         player = GameObject.FindWithTag("Player").transform;
-        energyText = GameObject.Find("energy").GetComponent<TextMesh>();
+        energyText = GameObject.Find("energy").GetComponent<TMP_Text>();
     }
 
     //get random point in a circle
@@ -117,7 +118,7 @@ public class EnemyMovement : MonoBehaviour
             PlayerPrefs.DeleteKey("energy");
             PlayerPrefs.SetInt("energy", energy + 1);
             energyText.text = "Energy: " + energy.ToString() + "/15";
-            Debug.Log("energy: " + energy);
+            Debug.Log("energy text : " + energy);
 
             Destroy(gun);
             Destroy(gameObject);

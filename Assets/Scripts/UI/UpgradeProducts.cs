@@ -11,21 +11,32 @@ public class UpgradeProducts : MonoBehaviour
     public Sprite fillIcon;
     public int UpgradeLimit;
 
-    public void Start()
-    {
-        IconsUpdate();
+  private int ups;
+
+  public void Start()
+  {
+    IconsUpdate();
+    if (PlayerPrefs.HasKey("ups") == false) {
+      ups = 0;
     }
+    else {
+      ups = PlayerPrefs.GetInt("ups");
+    }
+  }
 
-    public void ProductUpgrade()
-    {
-        int count = PlayerPrefs.GetInt(product);
-        if (count < UpgradeLimit)
-        {
-            count++;
-            PlayerPrefs.SetInt(product, count);
+  public void ProductUpgrade()
+  {
+    Debug.Log("UP: " + ups);
+    if (ups > 0) {
+      --ups;
+      int count = PlayerPrefs.GetInt(product);
+      if (count < UpgradeLimit)
+      {
+        count++;
+        PlayerPrefs.SetInt(product, count);
 
-            emptyIcon[count - 1].overrideSprite = fillIcon;
-        }
+        emptyIcon[count - 1].overrideSprite = fillIcon;
+      }
     }
 
     void IconsUpdate()
