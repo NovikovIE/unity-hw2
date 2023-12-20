@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -19,8 +21,9 @@ public class EnemyMovement : MonoBehaviour
     MapGenerator mapGenerator;
 
     Transform player;
+    PlayerMovement playerMovement;
 
-    TextMesh energyText;
+    TMP_Text energyText;
 
     float last_point_pick = 0.0f;
 
@@ -43,7 +46,8 @@ public class EnemyMovement : MonoBehaviour
         randomPoint = spawnPoint;
         mapGenerator = GameObject.FindWithTag("MapGenerator").GetComponent<MapGenerator>();
         player = GameObject.FindWithTag("Player").transform;
-        energyText = GameObject.Find("energy").GetComponent<TextMesh>();
+        playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
+        energyText = GameObject.Find("energy").GetComponent<TMP_Text>();
     }
 
     //get random point in a circle
@@ -72,7 +76,15 @@ public class EnemyMovement : MonoBehaviour
         }
 
         //move to random point
-        transform.position = Vector2.MoveTowards(transform.position, randomPoint, moveSpeed * Time.deltaTime);
+        var movement = Vector2.MoveTowards(transform.position, randomPoint, moveSpeed * Time.deltaTime);
+        
+        var dir = randomPoint - (Vector2)transform.position;
+        
+        animator.SetFloat("Horizontal", dir.x);
+        animator.SetFloat("Vertical", dir.y);
+        animator.SetFloat("Speed", dir.sqrMagnitude);
+        
+        transform.position = movement;
     }
 
     private void Update()
@@ -90,7 +102,7 @@ public class EnemyMovement : MonoBehaviour
         {
             case State.attack:
             {
-                gun.Shoot();
+                Attack();
                 break;
             }
             case State.stagger: 
@@ -108,19 +120,24 @@ public class EnemyMovement : MonoBehaviour
 
         if (health <= 0)
         {
-            Debug.Log("Enemy died");
-            if (PlayerPrefs.HasKey("energy") == false)
-            {
-                PlayerPrefs.SetInt("energy", 0); // пример значения
+            playerMovement.energy += 1;
+            energyText.text = "Energy: " + playerMovement.energy + "/15";
+            if (playerMovement.energy >= 15) {
+
+                SceneManager.LoadScene("WinScreen");
             }
-            int energy = PlayerPrefs.GetInt("energy");
-            PlayerPrefs.DeleteKey("energy");
-            PlayerPrefs.SetInt("energy", energy + 1);
-            energyText.text = "Energy: " + energy.ToString() + "/15";
-            Debug.Log("energy: " + energy);
 
             Destroy(gun);
             Destroy(gameObject);
         }
+    }
+
+    private void Attack()
+    {
+        animator.SetFloat("Horizontal", 0);
+        animator.SetFloat("Vertical", 0);
+        animator.SetFloat("Speed", 0);
+        
+        gun.Shoot();
     }
 }

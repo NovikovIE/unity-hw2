@@ -7,6 +7,8 @@ public class LoadGame : MonoBehaviour
 {
   public void PlayAgain()
   {
-    SceneManager.LoadScene("Main Menu");
+    PlayerPrefs.SetInt("ups", 0); // пример значения
+    PlayerPrefs.SetInt("energy", 0); // пример значения
+    SceneManager.LoadScene("SampleScene");
   }
 }
