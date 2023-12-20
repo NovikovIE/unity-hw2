@@ -11,15 +11,22 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
 
     private Vector2 movement;
-    
+
+
+    [SerializeField] public List<PlayerGun> Guns = new List<PlayerGun>();
     [SerializeField] private PlayerGun Gun;
+    public int selectedWeapon;
     private bool isShooting = false;
-    
+
+    private void Start()
+    {
+        Gun = Guns[0];
+    }
+
     private void HandleMovementInput()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
@@ -27,6 +34,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        selectedWeapon = WeaponSwitching.selectedWeapon;
+        Gun = Guns[selectedWeapon];
+
         HandleMovementInput();
         Gun.RotateWeapon();
         
