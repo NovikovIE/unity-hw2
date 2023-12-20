@@ -74,7 +74,15 @@ public class EnemyMovement : MonoBehaviour
         }
 
         //move to random point
-        transform.position = Vector2.MoveTowards(transform.position, randomPoint, moveSpeed * Time.deltaTime);
+        var movement = Vector2.MoveTowards(transform.position, randomPoint, moveSpeed * Time.deltaTime);
+        
+        var dir = randomPoint - (Vector2)transform.position;
+        
+        animator.SetFloat("Horizontal", dir.x);
+        animator.SetFloat("Vertical", dir.y);
+        animator.SetFloat("Speed", dir.sqrMagnitude);
+        
+        transform.position = movement;
     }
 
     private void Update()
@@ -92,7 +100,7 @@ public class EnemyMovement : MonoBehaviour
         {
             case State.attack:
             {
-                gun.Shoot();
+                Attack();
                 break;
             }
             case State.stagger: 
@@ -117,8 +125,8 @@ public class EnemyMovement : MonoBehaviour
             }
             int energy = PlayerPrefs.GetInt("energy");
             PlayerPrefs.DeleteKey("energy");
-            PlayerPrefs.SetInt("energy", energy + 1);
-            energyText.text = "Energy: " + energy.ToString() + "/15";
+            PlayerPrefs.SetInt("energy", energy + 2);
+            energyText.text = "Energy: " + (energy + 2).ToString() + "/15";
             Debug.Log("energy text : " + energy);
             if (energy >= 15) {
 
@@ -128,5 +136,14 @@ public class EnemyMovement : MonoBehaviour
             Destroy(gun);
             Destroy(gameObject);
         }
+    }
+
+    private void Attack()
+    {
+        animator.SetFloat("Horizontal", 0);
+        animator.SetFloat("Vertical", 0);
+        animator.SetFloat("Speed", 0);
+        
+        gun.Shoot();
     }
 }
