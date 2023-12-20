@@ -7,30 +7,38 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5.0f;
 
-    float health = 20f;
-
     public Rigidbody2D rb;
     public Animator animator;
 
     private Vector2 movement;
-    
-    [SerializeField] private PlayerGun gun;
+
+
+    [SerializeField] public List<PlayerGun> Guns = new List<PlayerGun>();
+    [SerializeField] private PlayerGun Gun;
+    public int selectedWeapon;
     private bool isShooting = false;
-    
+
+    private void Start()
+    {
+        Gun = Guns[0];
+    }
+
     private void HandleMovementInput()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
     }
-    
+
     private void Update()
     {
+        selectedWeapon = WeaponSwitching.selectedWeapon;
+        Gun = Guns[selectedWeapon];
+
         HandleMovementInput();
-        gun.RotateWeapon();
+        Gun.RotateWeapon();
         
         if (Input.GetMouseButtonDown(0))
         {
@@ -43,23 +51,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (isShooting)
         {
-            gun.Shoot();
+            Gun.Shoot();
         }
     }
 
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
-    }
-
-     public void TakeDamage(float damage) {
-        health -= damage;
-
-
-        if (health <= 0)
-        {
-            Destroy(gun);
-            Destroy(gameObject);
-        }
     }
 }
