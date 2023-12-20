@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311912, g: 0.3807398, b: 0.3587271, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311926, g: 0.38073993, b: 0.35872683, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -247,10 +247,9 @@ MonoBehaviour:
   moveSpeed: 5
   rb: {fileID: 879930130}
   animator: {fileID: 879930132}
-  gun: {fileID: 0}
 --- !u!95 &879930132
 Animator:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -267,8 +266,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!61 &879930133
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -529,7 +527,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3685d17e199c8f3f2a179442a03e9a49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
   target: {fileID: 879930128}
 --- !u!1 &1019081352
 GameObject:
@@ -638,8 +635,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d543dffcea8e60fecb31ac07354ca0ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wall: {fileID: 0}
-  floor: {fileID: 0}
-  wallTiles: []
-  sideTiles: []
-  floorTiles: []
+  wallTile: {fileID: 11400000, guid: 322b7a91ab12729dfa35bbd9e42aa9a7, type: 2}
+  tilemap: {fileID: 913517324}

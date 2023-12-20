@@ -7,8 +7,6 @@ public class EnemyMovement : MonoBehaviour
 {
     public float moveSpeed = 2.0f;
 
-    float health = 15.0f;
-
     public Rigidbody2D rb;
     public Animator animator;
 
@@ -16,9 +14,9 @@ public class EnemyMovement : MonoBehaviour
     Vector2 randomPoint;
     public float radius = 15.0f;
 
-    MapGenerator mapGenerator;
+    public MapGenerator mapGenerator;
 
-    Transform player;
+    public Transform player;
 
     float last_point_pick = 0.0f;
 
@@ -32,15 +30,13 @@ public class EnemyMovement : MonoBehaviour
     State state = State.stagger;
 
 
-    [SerializeField] private EnemyGun gun;
+    // [SerializeField] private EnemyGun gun;
     // private bool isShooting = false;
 
     void Start()
     {
         spawnPoint = transform.position;
         randomPoint = spawnPoint;
-        mapGenerator = GameObject.FindWithTag("MapGenerator").GetComponent<MapGenerator>();
-        player = GameObject.FindWithTag("Player").transform;
     }
 
     //get random point in a circle
@@ -58,6 +54,7 @@ public class EnemyMovement : MonoBehaviour
     //function to move randomly around the spawnpoint
     private void WalkAround()
     {
+        Debug.Log("WalkAround");
         //check if close enough to randomPoint
         if (Vector2.Distance(transform.position, randomPoint) < 0.1f || (Time.time - last_point_pick) > 3.0f)
         {
@@ -68,14 +65,15 @@ public class EnemyMovement : MonoBehaviour
             last_point_pick = Time.time;
         }
 
+        Debug.Log("randomPoint: " + randomPoint + " Position: " + transform.position);
+
         //move to random point
         transform.position = Vector2.MoveTowards(transform.position, randomPoint, moveSpeed * Time.deltaTime);
     }
 
     private void Update()
     {
-
-        gun.RotateWeapon();
+        Debug.Log(state);
         if (Vector2.Distance(transform.position, player.position) < 6f) {
             state = State.attack;
         }
@@ -87,7 +85,6 @@ public class EnemyMovement : MonoBehaviour
         {
             case State.attack:
             {
-                gun.Shoot();
                 break;
             }
             case State.stagger: 
@@ -95,17 +92,6 @@ public class EnemyMovement : MonoBehaviour
                 WalkAround();
                 break;
             }
-        }
-    }
-
-    public void TakeDamage(float damage) {
-        health -= damage;
-
-
-        if (health <= 0)
-        {
-            Destroy(gun);
-            Destroy(gameObject);
         }
     }
 }
