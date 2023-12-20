@@ -16,7 +16,7 @@ public class SniperRifle : PlayerGun
 
         Bullet bullet = bulletInstance.GetComponent<Bullet>();
         
-        bullet.damage = 15;
+        bullet.damage = 15.0f * this.multiplier;
         bullet.bulletSpeed = 30;
         
         SetBulletDirection(bullet, position);

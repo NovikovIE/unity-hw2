@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,19 +17,17 @@ public class PlayerMovement : MonoBehaviour
   private bool isShooting = false;
   public UpgradeProducts upgradeProducts;
   public float health = 20.0f;
-  public float damage = 3.0f;
-  
   float damageMultiplier = 1.0f;
 
   private void Start()
   {
     if (PlayerPrefs.HasKey("health") == false)
     {
-      PlayerPrefs.SetInt("health", health); // пример значения
+      PlayerPrefs.SetInt("health", 20); // пример значения
     }
     if (PlayerPrefs.HasKey("damage") == false)
     {
-      PlayerPrefs.SetInt("damage", 3); // пример значения
+      PlayerPrefs.SetInt("damage", 0); // пример значения
     }
     StatusUpdate();
   }
@@ -74,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
     {
       Destroy(gun);
       Destroy(gameObject);
+
+      SceneManager.LoadScene("Main Menu");
     }
   }
 
@@ -81,12 +82,14 @@ public class PlayerMovement : MonoBehaviour
   {
     if (PlayerPrefs.HasKey("health"))
     {
-      health = PlayerPrefs.GetInt("health");
+      health = 20 + 5 * PlayerPrefs.GetInt("health");
     }
     if (PlayerPrefs.HasKey("damage"))
     {
-      damage = PlayerPrefs.GetInt("damage");
+      int damage = PlayerPrefs.GetInt("damage");
+      damageMultiplier = 1.0f * (float)(Math.Pow(1.2f, damage));
     }
+    gun.SetMultiplier(damageMultiplier);
   }
 
   private void FixedUpdate()

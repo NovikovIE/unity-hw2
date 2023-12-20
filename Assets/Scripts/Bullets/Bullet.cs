@@ -7,7 +7,7 @@ public abstract class Bullet : MonoBehaviour
 {
     public float bulletSpeed = 6f;
     public Vector3 direction;
-    public int damage = 1;
+    public float damage = 1;
     public Rigidbody2D rb;
     public bool isEnemyBullet = false;
 

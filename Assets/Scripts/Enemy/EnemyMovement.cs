@@ -74,6 +74,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(state);
 
         gun.RotateWeapon();
         if (Vector2.Distance(transform.position, player.position) < 6f) {

@@ -17,6 +17,8 @@ public abstract class PlayerGun : MonoBehaviour
     
     private bool canFire = true;
     protected float fireRate = 1f;
+
+    protected float multiplier = 1f;
     
     private void Start()
     {
@@ -79,5 +81,9 @@ public abstract class PlayerGun : MonoBehaviour
             canFire = false;
             StartCoroutine(ShootCoroutine());
         }
+    }
+
+    public void SetMultiplier(float multiplier) {
+        this.multiplier = multiplier;
     }
 }

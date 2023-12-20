@@ -5,8 +5,8 @@ using System;
 
 public class MapGenerator : MonoBehaviour {
 
-	public int width;
-	public int height;
+	public int width = 128;
+	public int height = 128;
 
 	public string seed;
 	public bool useRandomSeed;
@@ -17,7 +17,8 @@ public class MapGenerator : MonoBehaviour {
 	int[,] map;
 
 	public bool CheckPointIsClear(Vector2 point) {
-		return map[(int)point.x, (int)point.y] == 0;
+		Debug.Log(point);
+		return map[(int)point.x + 64, (int)point.y + 64] == 0;
 	}
 
 	void Start() {
