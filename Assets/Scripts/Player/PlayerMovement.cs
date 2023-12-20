@@ -17,16 +17,17 @@ public class PlayerMovement : MonoBehaviour
   public UpgradeProducts upgradeProducts;
   public int health;
 
-  void Start()
+  private void Start()
   {
-    if (PlayerPrefs.HasKey("health"))
+    if (PlayerPrefs.HasKey("health") == false)
     {
-      health = PlayerPrefs.GetInt("health");
+      PlayerPrefs.SetInt("health", health); // пример значения
     }
-    if (PlayerPrefs.HasKey("damage"))
+    if (PlayerPrefs.HasKey("damage") == false)
     {
-      int damage = PlayerPrefs.GetInt("damage");
+      PlayerPrefs.SetInt("damage", 3); // пример значения
     }
+    StatusUpdate();
   }
 
   private void HandleMovementInput()
@@ -56,6 +57,18 @@ public class PlayerMovement : MonoBehaviour
     if (isShooting)
     {
       gun.Shoot();
+    }
+  }
+
+  public void StatusUpdate()
+  {
+    if (PlayerPrefs.HasKey("health"))
+    {
+      health = PlayerPrefs.GetInt("health");
+    }
+    if (PlayerPrefs.HasKey("damage"))
+    {
+      int damage = PlayerPrefs.GetInt("damage");
     }
   }
 
