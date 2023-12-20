@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5.0f;
 
+    float health = 20f;
+
     public Rigidbody2D rb;
     public Animator animator;
 
@@ -48,5 +50,16 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
+    }
+
+     public void TakeDamage(float damage) {
+        health -= damage;
+
+
+        if (health <= 0)
+        {
+            Destroy(gun);
+            Destroy(gameObject);
+        }
     }
 }

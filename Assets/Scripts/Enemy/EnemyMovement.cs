@@ -7,6 +7,8 @@ public class EnemyMovement : MonoBehaviour
 {
     public float moveSpeed = 2.0f;
 
+    float health = 15.0f;
+
     public Rigidbody2D rb;
     public Animator animator;
 
@@ -72,6 +74,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
+
         gun.RotateWeapon();
         if (Vector2.Distance(transform.position, player.position) < 6f) {
             state = State.attack;
@@ -92,6 +95,17 @@ public class EnemyMovement : MonoBehaviour
                 WalkAround();
                 break;
             }
+        }
+    }
+
+    public void TakeDamage(float damage) {
+        health -= damage;
+
+
+        if (health <= 0)
+        {
+            Destroy(gun);
+            Destroy(gameObject);
         }
     }
 }

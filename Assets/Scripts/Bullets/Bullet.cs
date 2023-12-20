@@ -33,6 +33,11 @@ public abstract class Bullet : MonoBehaviour
 
         if (isDamageBullet) {
             Destroy(gameObject);
+            if (isEnemy) {
+                other.gameObject.GetComponent<EnemyMovement>().TakeDamage(damage);
+            } else {
+                other.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
+            }
         }
 
         if (isOwnBullet)
