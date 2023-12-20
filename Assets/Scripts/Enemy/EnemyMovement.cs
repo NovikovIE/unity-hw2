@@ -14,9 +14,9 @@ public class EnemyMovement : MonoBehaviour
     Vector2 randomPoint;
     public float radius = 15.0f;
 
-    public MapGenerator mapGenerator;
+    MapGenerator mapGenerator;
 
-    public Transform player;
+    Transform player;
 
     float last_point_pick = 0.0f;
 
@@ -30,13 +30,15 @@ public class EnemyMovement : MonoBehaviour
     State state = State.stagger;
 
 
-    // [SerializeField] private EnemyGun gun;
+    [SerializeField] private EnemyGun gun;
     // private bool isShooting = false;
 
     void Start()
     {
         spawnPoint = transform.position;
         randomPoint = spawnPoint;
+        mapGenerator = GameObject.FindWithTag("MapGenerator").GetComponent<MapGenerator>();
+        player = GameObject.FindWithTag("Player").transform;
     }
 
     //get random point in a circle
@@ -54,7 +56,6 @@ public class EnemyMovement : MonoBehaviour
     //function to move randomly around the spawnpoint
     private void WalkAround()
     {
-        Debug.Log("WalkAround");
         //check if close enough to randomPoint
         if (Vector2.Distance(transform.position, randomPoint) < 0.1f || (Time.time - last_point_pick) > 3.0f)
         {
@@ -65,15 +66,13 @@ public class EnemyMovement : MonoBehaviour
             last_point_pick = Time.time;
         }
 
-        Debug.Log("randomPoint: " + randomPoint + " Position: " + transform.position);
-
         //move to random point
         transform.position = Vector2.MoveTowards(transform.position, randomPoint, moveSpeed * Time.deltaTime);
     }
 
     private void Update()
     {
-        Debug.Log(state);
+        gun.RotateWeapon();
         if (Vector2.Distance(transform.position, player.position) < 6f) {
             state = State.attack;
         }
@@ -85,6 +84,7 @@ public class EnemyMovement : MonoBehaviour
         {
             case State.attack:
             {
+                gun.Shoot();
                 break;
             }
             case State.stagger: 

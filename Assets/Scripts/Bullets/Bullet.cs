@@ -20,23 +20,24 @@ public abstract class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("bullet collision");
 
         bool isPlayer = other.gameObject.CompareTag("Player");
         bool isEnemy = other.gameObject.CompareTag("Enemy");
+        bool isBullet = other.gameObject.CompareTag("Bullet");
+        if (isEnemy) {
+            Debug.Log("Enemy");
+        }
 
-        bool isOwnBullet = (!isEnemyBullet && isPlayer) || (isEnemyBullet && isEnemy);
-        bool isElseBullet = (isEnemyBullet && !isPlayer) || (!isEnemyBullet && !isEnemy);
+        bool isOwnBullet = (!isEnemyBullet && isPlayer) || (isEnemyBullet && isEnemy) || isBullet;
+        bool isDamageBullet = (isEnemyBullet && isPlayer) || (!isEnemyBullet && isEnemy);
+
+        if (isDamageBullet) {
+            Destroy(gameObject);
+        }
 
         if (isOwnBullet)
         {
             return;
-        }
-
-        if (isElseBullet)
-        {
-            // make damage
-            Destroy(gameObject);
         }
 
         Destroy(gameObject);
