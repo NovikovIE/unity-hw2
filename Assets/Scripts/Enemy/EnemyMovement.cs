@@ -20,6 +20,8 @@ public class EnemyMovement : MonoBehaviour
 
     Transform player;
 
+    TextMesh energyText;
+
     float last_point_pick = 0.0f;
 
     //states enum
@@ -41,6 +43,7 @@ public class EnemyMovement : MonoBehaviour
         randomPoint = spawnPoint;
         mapGenerator = GameObject.FindWithTag("MapGenerator").GetComponent<MapGenerator>();
         player = GameObject.FindWithTag("Player").transform;
+        energyText = GameObject.Find("energy").GetComponent<TextMesh>();
     }
 
     //get random point in a circle
@@ -74,7 +77,6 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(state);
 
         gun.RotateWeapon();
         if (Vector2.Distance(transform.position, player.position) < 6f) {
@@ -101,10 +103,22 @@ public class EnemyMovement : MonoBehaviour
 
     public void TakeDamage(float damage) {
         health -= damage;
+        Debug.Log("Enemy health: " + health + " damage: " + damage);
 
 
         if (health <= 0)
         {
+            Debug.Log("Enemy died");
+            if (PlayerPrefs.HasKey("energy") == false)
+            {
+                PlayerPrefs.SetInt("energy", 0); // пример значения
+            }
+            int energy = PlayerPrefs.GetInt("energy");
+            PlayerPrefs.DeleteKey("energy");
+            PlayerPrefs.SetInt("energy", energy + 1);
+            energyText.text = "Energy: " + energy.ToString() + "/15";
+            Debug.Log("energy: " + energy);
+
             Destroy(gun);
             Destroy(gameObject);
         }

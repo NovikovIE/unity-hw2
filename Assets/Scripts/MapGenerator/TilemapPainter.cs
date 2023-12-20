@@ -11,6 +11,7 @@ public class TilemapPainter : MonoBehaviour
     public List<Tile> wallTiles;
     public List<Tile> sideTiles;
     public List<Tile> floorTiles;
+    public GameObject enemyPrefab;
 
     public void PaintMap(int[,] map)
     {
@@ -32,6 +33,15 @@ public class TilemapPainter : MonoBehaviour
                 {
                     int idx = Random.Range(0, sideTiles.Count - 1);
                     wall.SetTile(new Vector3Int(x, y, 0), sideTiles[idx]);
+                }
+                else if (System.Math.Abs(x - width / 2) > 10 && System.Math.Abs(y - height / 2) > 10)
+                {
+                    //spawn enemy whith small chance
+                    // spawn enemy with small chance
+                    if (Random.value < 0.01f)
+                    {
+                        Instantiate(enemyPrefab, new Vector3(x-64, y-64, 0), Quaternion.identity);
+                    }
                 }
             }
         }

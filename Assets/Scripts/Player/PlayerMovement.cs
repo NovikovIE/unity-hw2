@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
   {
     if (PlayerPrefs.HasKey("health") == false)
     {
-      PlayerPrefs.SetInt("health", 20); // пример значения
+      PlayerPrefs.SetInt("health", 0); // пример значения
     }
     if (PlayerPrefs.HasKey("damage") == false)
     {
@@ -71,10 +71,21 @@ public class PlayerMovement : MonoBehaviour
 
     if (health <= 0)
     {
+      /*PlayerPrefs.DeleteKey("health");
+      PlayerPrefs.DeleteKey("damage");
+      if (PlayerPrefs.HasKey("ups") == false)
+      {
+        PlayerPrefs.SetInt("ups", 0); // пример значения
+      }
+      int ups = PlayerPrefs.GetInt("ups");
+      PlayerPrefs.DeleteKey("ups");
+      PlayerPrefs.SetInt("ups", ups + 1);
+*/
+      SceneManager.LoadScene("Upgrade");
+
       Destroy(gun);
       Destroy(gameObject);
 
-      SceneManager.LoadScene("Main Menu");
     }
   }
 

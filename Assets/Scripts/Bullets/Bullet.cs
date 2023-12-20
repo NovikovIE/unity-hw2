@@ -24,9 +24,6 @@ public abstract class Bullet : MonoBehaviour
         bool isPlayer = other.gameObject.CompareTag("Player");
         bool isEnemy = other.gameObject.CompareTag("Enemy");
         bool isBullet = other.gameObject.CompareTag("Bullet");
-        if (isEnemy) {
-            Debug.Log("Enemy");
-        }
 
         bool isOwnBullet = (!isEnemyBullet && isPlayer) || (isEnemyBullet && isEnemy) || isBullet;
         bool isDamageBullet = (isEnemyBullet && isPlayer) || (!isEnemyBullet && isEnemy);

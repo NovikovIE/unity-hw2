@@ -17,7 +17,6 @@ public class MapGenerator : MonoBehaviour {
 	int[,] map;
 
 	public bool CheckPointIsClear(Vector2 point) {
-		Debug.Log(point);
 		return map[(int)point.x + 64, (int)point.y + 64] == 0;
 	}
 
