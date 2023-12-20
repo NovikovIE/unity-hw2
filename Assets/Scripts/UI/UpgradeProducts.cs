@@ -18,7 +18,6 @@ public class UpgradeProducts : MonoBehaviour
 
   public void ProductUpgrade()
   {
-    Debug.Log("UP: " + ups);
     int ups = PlayerPrefs.GetInt("ups");
     if (ups > 0) {
       --ups;
