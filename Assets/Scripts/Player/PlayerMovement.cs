@@ -71,8 +71,6 @@ public class PlayerMovement : MonoBehaviour
 
     if (health <= 0)
     {
-      /*PlayerPrefs.DeleteKey("health");
-      PlayerPrefs.DeleteKey("damage");
       if (PlayerPrefs.HasKey("ups") == false)
       {
         PlayerPrefs.SetInt("ups", 0); // пример значения
@@ -80,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
       int ups = PlayerPrefs.GetInt("ups");
       PlayerPrefs.DeleteKey("ups");
       PlayerPrefs.SetInt("ups", ups + 1);
-*/
+
       SceneManager.LoadScene("Upgrade");
 
       Destroy(gun);
