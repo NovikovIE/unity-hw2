@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -119,6 +120,10 @@ public class EnemyMovement : MonoBehaviour
             PlayerPrefs.SetInt("energy", energy + 1);
             energyText.text = "Energy: " + energy.ToString() + "/15";
             Debug.Log("energy text : " + energy);
+            if (energy >= 15) {
+
+                SceneManager.LoadScene("WinScreen");
+            }
 
             Destroy(gun);
             Destroy(gameObject);

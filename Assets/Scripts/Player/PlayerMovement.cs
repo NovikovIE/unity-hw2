@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -17,7 +18,10 @@ public class PlayerMovement : MonoBehaviour
     private bool isShooting = false;
     public UpgradeProducts upgradeProducts;
     public float health = 20.0f;
+    public float maxHealth = 20.0f;
     float damageMultiplier = 1.0f;
+
+     public TMP_Text healthText;
 
     [SerializeField] private GameObject timerObject;
     private Timer timer;
@@ -35,8 +39,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         timer = timerObject.GetComponent<Timer>();
+
+        healthText.text = "Test";
         
         StatusUpdate();
+
+
     }
 
     private void HandleMovementInput()
@@ -85,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
     {
         health -= damage;
 
+        healthText.text = "Health: " + health.ToString() + "/" + maxHealth.ToString();
 
         if (health <= 0)
         {
@@ -112,6 +121,12 @@ public class PlayerMovement : MonoBehaviour
             int damage = PlayerPrefs.GetInt("damage");
             damageMultiplier = 1.0f * (float)(Math.Pow(1.2f, damage));
         }
+
+        maxHealth = health;
+
+
+
+        healthText.text = "Health: " + health.ToString() + "/" + maxHealth.ToString();
 
         gun.SetMultiplier(damageMultiplier);
     }

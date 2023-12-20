@@ -11,24 +11,18 @@ public class UpgradeProducts : MonoBehaviour
     public Sprite fillIcon;
     public int UpgradeLimit;
 
-  private int ups;
-
   public void Start()
   {
     IconsUpdate();
-    if (PlayerPrefs.HasKey("ups") == false) {
-      ups = 0;
-    }
-    else {
-      ups = PlayerPrefs.GetInt("ups");
-    }
   }
 
   public void ProductUpgrade()
   {
     Debug.Log("UP: " + ups);
+    int ups = PlayerPrefs.GetInt("ups");
     if (ups > 0) {
       --ups;
+      PlayerPrefs.SetInt("ups", ups);
       int count = PlayerPrefs.GetInt(product);
       if (count < UpgradeLimit)
       {
@@ -38,6 +32,7 @@ public class UpgradeProducts : MonoBehaviour
         emptyIcon[count - 1].overrideSprite = fillIcon;
       }
     }
+  }
 
     void IconsUpdate()
     {
@@ -47,4 +42,5 @@ public class UpgradeProducts : MonoBehaviour
             emptyIcon[i].overrideSprite = fillIcon;
         }
     }
+  
 }
