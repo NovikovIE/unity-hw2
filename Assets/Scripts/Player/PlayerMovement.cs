@@ -6,106 +6,125 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-  public float moveSpeed = 5.0f;
+    public float moveSpeed = 5.0f;
 
-  public Rigidbody2D rb;
-  public Animator animator;
+    public Rigidbody2D rb;
+    public Animator animator;
 
-  private Vector2 movement;
+    private Vector2 movement;
 
-  [SerializeField] private PlayerGun gun;
-  private bool isShooting = false;
-  public UpgradeProducts upgradeProducts;
-  public float health = 20.0f;
-  float damageMultiplier = 1.0f;
+    [SerializeField] private PlayerGun gun;
+    private bool isShooting = false;
+    public UpgradeProducts upgradeProducts;
+    public float health = 20.0f;
+    float damageMultiplier = 1.0f;
 
-  private void Start()
-  {
-    if (PlayerPrefs.HasKey("health") == false)
+    [SerializeField] private GameObject timerObject;
+    private Timer timer;
+    
+    private void Start()
     {
-      PlayerPrefs.SetInt("health", 0); // пример значения
-    }
-    if (PlayerPrefs.HasKey("damage") == false)
-    {
-      PlayerPrefs.SetInt("damage", 0); // пример значения
-    }
-    StatusUpdate();
-  }
+        if (PlayerPrefs.HasKey("health") == false)
+        {
+            PlayerPrefs.SetInt("health", 0); // пример значения
+        }
 
-  private void HandleMovementInput()
-  {
-    movement.x = Input.GetAxisRaw("Horizontal");
-    movement.y = Input.GetAxisRaw("Vertical");
+        if (PlayerPrefs.HasKey("damage") == false)
+        {
+            PlayerPrefs.SetInt("damage", 0); // пример значения
+        }
 
-    animator.SetFloat("Horizontal", movement.x);
-    animator.SetFloat("Vertical", movement.y);
-    animator.SetFloat("Speed", movement.sqrMagnitude);
-  }
-
-  private void Update()
-  {
-    HandleMovementInput();
-    gun.RotateWeapon();
-
-    if (Input.GetMouseButtonDown(0))
-    {
-      isShooting = true;
-    }
-    else if (Input.GetMouseButtonUp(0))
-    {
-      isShooting = false;
+        timer = timerObject.GetComponent<Timer>();
+        
+        StatusUpdate();
     }
 
-    if (isShooting)
+    private void HandleMovementInput()
     {
-      gun.Shoot();
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetFloat("Speed", movement.sqrMagnitude);
     }
-  }
 
-
-
-  public void TakeDamage(float damage)
-  {
-    health -= damage;
-
-
-    if (health <= 0)
+    private void Update()
     {
-      /*PlayerPrefs.DeleteKey("health");
-      PlayerPrefs.DeleteKey("damage");
-      if (PlayerPrefs.HasKey("ups") == false)
-      {
-        PlayerPrefs.SetInt("ups", 0); // пример значения
-      }
-      int ups = PlayerPrefs.GetInt("ups");
-      PlayerPrefs.DeleteKey("ups");
-      PlayerPrefs.SetInt("ups", ups + 1);
-*/
-      SceneManager.LoadScene("Upgrade");
+        HandleMovementInput();
+        gun.RotateWeapon();
 
-      Destroy(gun);
-      Destroy(gameObject);
+        if (Input.GetMouseButtonDown(0))
+        {
+            isShooting = true;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            isShooting = false;
+        }
 
+        if (isShooting)
+        {
+            gun.Shoot();
+        }
     }
-  }
-
-  public void StatusUpdate()
-  {
-    if (PlayerPrefs.HasKey("health"))
+    
+    IEnumerator EndGame()
     {
-      health = 20 + 5 * PlayerPrefs.GetInt("health");
-    }
-    if (PlayerPrefs.HasKey("damage"))
-    {
-      int damage = PlayerPrefs.GetInt("damage");
-      damageMultiplier = 1.0f * (float)(Math.Pow(1.2f, damage));
-    }
-    gun.SetMultiplier(damageMultiplier);
-  }
+        Destroy(gun);
+        Time.timeScale = 0;
 
-  private void FixedUpdate()
-  {
-    rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
-    upgradeProducts.ProductUpgrade();
-  }
+        yield return new WaitForSecondsRealtime(2);
+        Destroy(gameObject);
+        Time.timeScale = 1;
+
+        SceneManager.LoadScene("Upgrade");
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+
+
+        if (health <= 0)
+        {
+            /*PlayerPrefs.DeleteKey("health");
+            PlayerPrefs.DeleteKey("damage");
+            if (PlayerPrefs.HasKey("ups") == false)
+            {
+              PlayerPrefs.SetInt("ups", 0); // пример значения
+            }
+            int ups = PlayerPrefs.GetInt("ups");
+            PlayerPrefs.DeleteKey("ups");
+            PlayerPrefs.SetInt("ups", ups + 1);
+            */
+            StartCoroutine(EndGame());
+        }
+    }
+
+    public void StatusUpdate()
+    {
+        if (PlayerPrefs.HasKey("health"))
+        {
+            health = 20 + 5 * PlayerPrefs.GetInt("health");
+        }
+
+        if (PlayerPrefs.HasKey("damage"))
+        {
+            int damage = PlayerPrefs.GetInt("damage");
+            damageMultiplier = 1.0f * (float)(Math.Pow(1.2f, damage));
+        }
+
+        gun.SetMultiplier(damageMultiplier);
+    }
+
+    private void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
+        // upgradeProducts.ProductUpgrade();
+        if (timer.GetTime() <= 0)
+        {
+            StartCoroutine(EndGame());
+        }
+    }
 }
