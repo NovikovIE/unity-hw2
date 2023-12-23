@@ -14,7 +14,9 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 movement;
 
-    [SerializeField] private PlayerGun gun;
+    [SerializeField] public List<PlayerGun> Guns = new List<PlayerGun>();
+    [SerializeField] private PlayerGun Gun;
+    [SerializeField] public int selectedWeapon = 0;
     private bool isShooting = false;
     public UpgradeProducts upgradeProducts;
     public float health = 20.0f;
@@ -28,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     
     private void Start()
     {
+        Gun = Guns[0];
         if (PlayerPrefs.HasKey("health") == false)
         {
             PlayerPrefs.SetInt("health", 0); // пример значения
@@ -59,8 +62,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        selectedWeapon = WeaponSwitching.selectedWeapon;
+        Gun = Guns[selectedWeapon];
+
         HandleMovementInput();
-        gun.RotateWeapon();
+        Gun.RotateWeapon();
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -73,13 +79,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (isShooting)
         {
-            gun.Shoot();
+            Gun.Shoot();
         }
     }
     
     IEnumerator EndGame()
     {
-        Destroy(gun);
+        Destroy(Gun);
         Time.timeScale = 0;
 
         yield return new WaitForSecondsRealtime(2);
@@ -128,7 +134,9 @@ public class PlayerMovement : MonoBehaviour
 
         healthText.text = "Health: " + health.ToString() + "/" + maxHealth.ToString();
 
-        gun.SetMultiplier(damageMultiplier);
+        selectedWeapon = WeaponSwitching.selectedWeapon;
+        Gun = Guns[selectedWeapon];
+        Gun.SetMultiplier(damageMultiplier);
     }
 
     private void FixedUpdate()
